@@ -129,8 +129,8 @@ dist/
 tmp/
 temp/
 
-# GitIgnore Own
-.gitignore
+# All file with .gitignore file extention
+*.gitignore
 
 # End of https://www.toptal.com/developers/gitignore/api/node
 

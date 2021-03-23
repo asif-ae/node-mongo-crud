@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NodeJS with MongoDB and CRUD</title>
+</head>
+<body>
+  <h1>Send successfully!</h1>
+  <form action="/addProduct" method="post">
+    <input type="text" placeholder="Name" name="name">
+    <input type="text" placeholder="Price" name="price">
+    <input type="text" placeholder="Quantity" name="quantity">
+    <input type="submit" value="Submit">
+  </form>
+
+  <div id="products">
+
+  </div>
+
+  <script>
+    const loadProducts = () => {
+      fetch('/products')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        const conatainer = document.getElementById('products');
+        data.forEach(product => {
+          const item = document.createElement('div');
+          item.style.display = "flex";
+          item.style.alignItems = "center";
+          item.style.justifyContent = "space-around";
+
+          item.innerHTML = `
+            <h1>${product.name}</h1>
+            <h2>${product.price}</h2>
+            <h3>${product.quantity}</h3>
+          `;
+          conatainer.appendChild(item);
+        });
+      });
+    }
+    loadProducts();
+  </script>
+</body>
+</html>

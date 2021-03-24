@@ -36,12 +36,22 @@
             <h1>${product.name}</h1>
             <h2>${product.price}</h2>
             <h3>${product.quantity}</h3>
+            <button onclick="deleteProduct('${product._id}')">Delete</button>
           `;
           conatainer.appendChild(item);
         });
       });
     }
     loadProducts();
+
+    // Delete Product Function
+    const deleteProduct = (id) => {
+      fetch(`/delete/${id}`, {
+        method: 'DELETE'
+      })
+      .then(res => res.json())
+      .then(result => console.log('Deleted successfully'));
+    }
   </script>
 </body>
 </html>

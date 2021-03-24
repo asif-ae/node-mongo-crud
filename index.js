@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 
+// This is require for delete
+const ObjectId = require('mongodb').ObjectId;
+
 const pass = 'hxhxsrRJooXPNG$R';
 const uri = "mongodb+srv://tushartd:hxhxsrRJooXPNG$R@cluster0.lq9rh.mongodb.net/organicdb?retryWrites=true&w=majority";
 
@@ -48,6 +51,16 @@ client.connect(err => {
       console.log('data added successfully');
       res.send('success');
     })
+  });
+
+  // Delete something from database
+  app.delete('/delete/:id', (req, res) => {
+    const product = ObjectId(req.params.id);
+    productCollection.deleteOne({_id: product})
+    .then((result) => {
+      console.log(result);
+      // res.send('delete');
+    });
   });
 
   console.log('DB Connected');

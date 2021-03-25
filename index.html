@@ -15,12 +15,12 @@
     <input type="submit" value="Submit">
   </form>
 
-  <div id="products">
+  <div id="products"></div>
 
-  </div>
+  <div id="update"></div>
 
   <script>
-    const loadProducts = () => {
+    const loadAllProducts = () => {
       fetch('/products')
       .then(res => res.json())
       .then(data => {
@@ -36,13 +36,14 @@
             <h1>${product.name}</h1>
             <h2>${product.price}</h2>
             <h3>${product.quantity}</h3>
+            <button onclick="loadProduct('${product._id}')">Update</button>
             <button onclick="deleteProduct('${product._id}')">Delete</button>
           `;
           conatainer.appendChild(item);
         });
       });
     }
-    loadProducts();
+    loadAllProducts();
 
     // Delete Product Function
     const deleteProduct = (id) => {
@@ -51,6 +52,39 @@
       })
       .then(res => res.json())
       .then(result => console.log('Deleted successfully'));
+    }
+
+    // Load Product Function
+    const loadProduct = (id) => {
+      fetch(`/product/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        const update = document.getElementById('update');
+        update.style.display = "flex";
+        update.style.alignItems = "center";
+        update.style.justifyContent = "space-around";
+        update.innerHTML = `
+          <h1>Update</h1>
+          <h2>${data.name}</h2>
+          <input type="text" placeholder="Price" id="updatePrice" name="updatePrice" value="${data.price}">
+          <input type="text" placeholder="Quantity" id="updateQuantity" name="updateQuantity" value="${data.quantity}">
+          <button onclick="updateProduct('${data._id}')">Submit</button>
+        `;
+      });
+    }
+
+    // Update Product Function
+    const updateProduct = (id) => {
+      const price = document.getElementById('updatePrice').value;
+      const quantity = document.getElementById('updateQuantity').value;
+      const product = {id, price, quantity};
+      fetch(`/update/${id}`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(product)
+      })
+      .then(res => res.json())
+      .then(result => console.log('Updated successfully'));
     }
   </script>
 </body>

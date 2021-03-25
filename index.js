@@ -63,6 +63,29 @@ client.connect(err => {
     });
   });
 
+  // Load single product
+  app.get('/product/:id', (req, res) => {
+    const product = ObjectId(req.params.id);
+    productCollection.find({_id: product})
+    .toArray((err, documents) => {
+      res.send(documents[0]);
+    });
+  });
+
+  // Update product
+  app.patch('/update/:id', (req, res) => {
+    console.log(req.body.price, req.body.quantity)
+    const product = ObjectId(req.params.id);
+    productCollection.updateOne(
+      {_id: product},
+      { $set: { price: req.body.price, quantity: req.body.quantity } }
+    )
+    .then((result) => {
+      console.log(result);
+    });
+  });
+
+
   console.log('DB Connected');
   // perform actions on the collection object
   // client.close();
